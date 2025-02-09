@@ -11,11 +11,11 @@ import os
 file_path = r'C:\Users\Hp\Desktop\hackathon\hack2\crime-safety-app\crime_data.csv'
 user_file = r'C:\Users\Hp\Desktop\hackathon\hack2\crime-safety-app\users.xml'
 crime_data = pd.read_csv(file_path)
-account_sid = 'ACf8306e0bc7d47e863744a6f0e97f54f5'
-auth_token = '3d09039190e8415c199b1d6250cb9f58'
-twilio_number = '+14159688441'
+account_sid = PUT your id
+auth_token = PUT your id
+twilio_number = 'PUT your id'
 client = Client(account_sid, auth_token)
-locationiq_token = 'pk.16bbd408afc2077038d924a78dd58103'
+locationiq_token = PUT your id
 
 # --- XML User Management Functions ---
 def create_user_file(file_path):
@@ -191,7 +191,7 @@ if page == "Login":
         else:
             st.error("User not found. Please register first.")
     
-    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number")
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+91935 PUT your phone number", key="sos_number")
     if st.button("SOS Call", key="sos_call"):
         if to_number:
             try:
@@ -265,7 +265,7 @@ elif page == "Home Page":
     """, unsafe_allow_html=True)
 
     # Buttons on the Landing Page
-    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number_landing")
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+91935 PUT your phone number", key="sos_number_landing")
     
     if st.button("SOS Call", key="landing_sos"):
         if to_number:
@@ -304,7 +304,7 @@ elif page == "Search Zones":
         else:
             st.error(f"No data found for {district_name}")
 
-    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number_search")
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+91935 PUT your phone number", key="sos_number_search")
     if st.button("SOS Call", key="search_sos"):
         if to_number:
             try:
@@ -321,7 +321,7 @@ elif page == "Search Zones":
 
 elif page == "SOS":
     st.markdown("<div class='main-title'>SOS Alert</div>", unsafe_allow_html=True)
-    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number_sos")
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+91935 PUT your phone number", key="sos_number_sos")
     if st.button("SOS Call", key="sos_call"):
         if to_number:
             try:
