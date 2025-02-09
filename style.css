@@ -1,0 +1,71 @@
+<style>
+    /* Set a dark background and pink accents */
+    .stApp {
+        background-color: #000000; /* Black background */
+        color: #FFFFFF; /* White text for contrast */
+    }
+    
+    /* Main title styling */
+    .main-title {
+        text-align: center;
+        font-size: 36px;
+        color: #FF4081; /* Dark Pink color */
+        font-weight: bold;
+        margin-top: 20px;
+    }
+    
+    /* Section title styling */
+    .section-title {
+        font-size: 24px;
+        color: #FF4081; /* Dark Pink color */
+        margin-top: 20px;
+        border-bottom: 2px solid #FF4081;
+        padding-bottom: 10px;
+    }
+    
+    /* Button styling */
+    .btn, .sos-btn, .call-btn, .search-btn {
+        color: #FFFFFF; /* White text */
+        padding: 15px 30px;
+        text-align: center;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 50px;
+        margin: 20px auto;
+        display: inline-block;
+        width: 100%;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .sos-btn {
+        background-color: #FF4081; /* Dark Pink */
+    }
+    
+    .sos-btn:hover {
+        background-color: #E91E63; /* Slightly darker pink */
+    }
+    
+    .btn, .call-btn, .search-btn {
+        background-color: #333333; /* Dark Gray */
+    }
+    
+    .btn:hover, .call-btn:hover, .search-btn:hover {
+        background-color: #444444; /* Slightly lighter gray */
+    }
+    
+    /* Footer styling */
+    .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px 0;
+        background-color: #000000; /* Black background */
+        color: #FF4081; /* Dark Pink text */
+    }
+    
+    .footer img {
+        width: 40px;
+        height: auto;
+        margin: 0 10px;
+    }
+</style>

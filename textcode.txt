@@ -1,0 +1,576 @@
+TDJMHRMAC9HWEYNRM5MYDPDQ
+
+npm install firebase
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyB7_N9ljlvJJyW1O_SSg2rcrTpIguQ15cY",
+  authDomain: "womensafety-6cd2f.firebaseapp.com",
+  projectId: "womensafety-6cd2f",
+  storageBucket: "womensafety-6cd2f.appspot.com",
+  messagingSenderId: "121490720142",
+  appId: "1:121490720142:web:306144b90ba3b1302550df",
+  measurementId: "G-0ZPFWX54VZ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+npm install -g firebase-tools
+
+firebase login
+
+firebase init
+
+firebase deploy
+
+
+
+
+
+
+import streamlit as st
+import folium
+from streamlit_folium import st_folium
+from twilio.rest import Client
+
+# Your Twilio credentials (replace with your actual credentials)
+account_sid = 'ACf8306e0bc7d47e863744a6f0e97f54f5'
+auth_token = '3d09039190e8415c199b1d6250cb9f58'
+twilio_number = '+14159688441'
+
+# Initialize Twilio client
+client = Client(account_sid, auth_token)
+
+# Function to make a call
+def make_call(to_number, from_number):
+    call = client.calls.create(
+        to=to_number,
+        from_=from_number,
+        url='http://demo.twilio.com/docs/voice.xml'  # A simple XML with voice instructions
+    )
+    return call.sid
+
+# Function for location tracking (dummy example)
+def get_location_map(lat, lon):
+    m = folium.Map(location=[lat, lon], zoom_start=12)
+    folium.Marker([lat, lon], popup='Your Location').add_to(m)
+    return m
+
+# Function to simulate searching for danger and safe zones (dummy example)
+def search_zones():
+    # Example danger and safe zones
+    danger_zones = [
+        {"name": "Danger Zone A", "lat": 28.7041, "lon": 77.1025},
+        {"name": "Danger Zone B", "lat": 28.7141, "lon": 77.1225},
+    ]
+    safe_zones = [
+        {"name": "Safe Zone A", "lat": 28.7241, "lon": 77.1325},
+        {"name": "Safe Zone B", "lat": 28.7341, "lon": 77.1425},
+    ]
+    return danger_zones, safe_zones
+
+# Streamlit app
+st.set_page_config(page_title="Women Safety App", layout="wide")
+
+# Custom CSS
+st.markdown("""
+    <style>
+        .main-title {
+            text-align: center;
+            font-size: 36px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer img {
+            width: 40px;
+            height: auto;
+            margin: 0 10px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Sidebar for navigation
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Login", "Register", "Home", "Search Zones", "SOS"])
+
+# --- Login Page ---
+if page == "Login":
+    st.markdown("<div class='main-title'>Login</div>", unsafe_allow_html=True)
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login", key="login"):
+        if username and password:
+            st.success("Logged in successfully!")
+            # Here you would include your authentication logic
+        else:
+            st.error("Please enter both username and password.")
+
+# --- Registration Page ---
+elif page == "Register":
+    st.markdown("<div class='main-title'>Register</div>", unsafe_allow_html=True)
+    new_username = st.text_input("New Username")
+    new_password = st.text_input("New Password", type="password")
+
+    if st.button("Register", key="register"):
+        if new_username and new_password:
+            st.success("Registration successful!")
+            # Here you would include your registration logic
+        else:
+            st.error("Please enter both username and password.")
+
+# --- Home Page ---
+elif page == "Home":
+    st.markdown("<div class='main-title'>Women Safety App</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>Your Location</div>", unsafe_allow_html=True)
+
+    # Dummy location for demonstration
+    location = {"lat": 28.7041, "lon": 77.1025}  # Example coordinates
+
+    # Show location map
+    m = get_location_map(location["lat"], location["lon"])
+    st_folium(m, width=700, height=500)
+
+# --- Search Zones Page ---
+elif page == "Search Zones":
+    st.markdown("<div class='main-title'>Search for Danger and Safe Zones</div>", unsafe_allow_html=True)
+
+    # Search for zones
+    danger_zones, safe_zones = search_zones()
+
+    st.markdown("<div class='section-title'>Danger Zones</div>", unsafe_allow_html=True)
+    for zone in danger_zones:
+        st.write(f"**{zone['name']}** at Latitude: {zone['lat']}, Longitude: {zone['lon']}")
+
+    st.markdown("<div class='section-title'>Safe Zones</div>", unsafe_allow_html=True)
+    for zone in safe_zones:
+        st.write(f"**{zone['name']}** at Latitude: {zone['lat']}, Longitude: {zone['lon']}")
+
+# --- SOS Page ---
+elif page == "SOS":
+    st.markdown("<div class='main-title'>SOS Alert</div>", unsafe_allow_html=True)
+
+    # Input field for the phone number
+    to_number = st.text_input("Enter the phone number to call", "+919353564074")
+
+    # Call button
+    if st.button("Make Call", key="call"):
+        try:
+            # Make the call
+            call_sid = make_call(to_number, twilio_number)
+            st.success(f"Call initiated successfully! Call SID: {call_sid}")
+        except Exception as e:
+            st.error(f"Error: {e}")
+
+# Footer Menu
+st.markdown("""
+    <div class="footer">
+        <img src="path/to/home_icon.png" alt="Home">
+        <img src="path/to/user_icon.png" alt="User">
+    </div>
+    """, unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+new 5.0
+
+import streamlit as st
+import pandas as pd
+import folium
+from streamlit_folium import st_folium
+from twilio.rest import Client
+import requests
+import xml.etree.ElementTree as ET
+import os
+
+# --- Paths and Credentials ---
+file_path = r'C:\Users\Hp\Desktop\hack2\crime-safety-app\crime_data.csv'
+user_file = r'C:\Users\Hp\Desktop\hack2\crime-safety-app\users.xml'
+crime_data = pd.read_csv(file_path)
+account_sid = 'ACf8306e0bc7d47e863744a6f0e97f54f5'
+auth_token = '3d09039190e8415c199b1d6250cb9f58'
+twilio_number = '+14159688441'
+client = Client(account_sid, auth_token)
+locationiq_token = 'pk.16bbd408afc2077038d924a78dd58103'
+
+# --- XML User Management Functions ---
+def create_user_file(file_path):
+    if not os.path.exists(file_path):
+        root = ET.Element("users")
+        tree = ET.ElementTree(root)
+        tree.write(file_path)
+
+def add_user_to_xml(file_path, username, password):
+    tree = ET.parse(file_path)
+    root = tree.getroot()
+    
+    for user in root.findall('user'):
+        if user.find('username').text == username:
+            return False
+    
+    user = ET.SubElement(root, "user")
+    ET.SubElement(user, "username").text = username
+    ET.SubElement(user, "password").text = password
+    tree.write(file_path)
+    return True
+
+def authenticate_user(file_path, username, password):
+    tree = ET.parse(file_path)
+    root = tree.getroot()
+    
+    for user in root.findall('user'):
+        if user.find('username').text == username and user.find('password').text == password:
+            return True
+    return False
+
+def user_exists(file_path, username):
+    tree = ET.parse(file_path)
+    root = tree.getroot()
+    
+    for user in root.findall('user'):
+        if user.find('username').text == username:
+            return True
+    return False
+
+create_user_file(user_file)
+
+# --- Twilio SOS Call Function ---
+def make_call(to_number, from_number):
+    call = client.calls.create(
+        to=to_number,
+        from_=from_number,
+        url='http://demo.twilio.com/docs/voice.xml'
+    )
+    return call.sid
+
+# --- Location Tracking and Mapping ---
+def get_lat_lon_locationiq(district_name, token):
+    try:
+        if district_name.lower() == "total" or not district_name.strip():
+            st.warning(f"Skipping invalid district name: {district_name}")
+            return None, None
+        url = f"https://us1.locationiq.com/v1/search.php?key={token}&q={district_name}, India&format=json"
+        response = requests.get(url)
+        data = response.json()
+        if data:
+            lat = data[0]['lat']
+            lon = data[0]['lon']
+            return float(lat), float(lon)
+        else:
+            st.warning(f"No location found for {district_name}")
+            return None, None
+    except Exception as e:
+        st.error(f"Error fetching coordinates for {district_name}: {e}")
+        return None, None
+
+def classify_zones(data, threshold=5000):
+    danger_zones = []
+    safe_zones = []
+    for _, row in data.iterrows():
+        lat, lon = get_lat_lon_locationiq(row['District'], locationiq_token)
+        if lat is not None and lon is not None:
+            if row['Total Cognizable IPC crimes'] > threshold:
+                danger_zones.append({"name": row['District'], "lat": lat, "lon": lon})
+            else:
+                safe_zones.append({"name": row['District'], "lat": lat, "lon": lon})
+    return danger_zones, safe_zones
+
+def get_location_map(lat, lon, danger_zones, safe_zones):
+    m = folium.Map(location=[lat, lon], zoom_start=6)
+    for zone in danger_zones:
+        folium.Marker([zone['lat'], zone['lon']], popup=f"Danger Zone: {zone['name']}", icon=folium.Icon(color='red')).add_to(m)
+    for zone in safe_zones:
+        folium.Marker([zone['lat'], zone['lon']], popup=f"Safe Zone: {zone['name']}", icon=folium.Icon(color='green')).add_to(m)
+    return m
+
+# --- Streamlit App ---
+st.set_page_config(page_title="Women Safety App", layout="wide")
+
+# Include the CSS directly in the code
+st.markdown("""
+    <style>
+        /* Set a background image or color */
+        .stApp {
+            background: url('https://www.example.com/background-image.jpg') no-repeat center center fixed; 
+            background-size: cover;
+            background-color:#cc99ff; /* Fallback color if image not available */
+        }
+        
+        .main-title {
+            text-align: center;
+            font-size: 36px;
+            color: #E91E63;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #673AB7;
+            margin-top: 20px;
+            border-bottom: 2px solid #FF4081;
+            padding-bottom: 10px;
+        }
+        .sos-btn, .btn, .call-btn, .search-btn {
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 50px;
+            margin: 20px auto;
+            display: inline-block;
+            width: 100%;
+        }
+        .sos-btn {
+            background-color: #FF5252;
+        }
+        .sos-btn:hover {
+            background-color: #E53935;
+        }
+        .btn, .call-btn, .search-btn {
+            background-color: #4CAF50;
+        }
+        .btn:hover, .call-btn:hover, .search-btn:hover {
+            background-color: #388E3C;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            background-color: #F3E5F5;
+            color: #673AB7;
+        }
+        .footer img {
+            width: 40px;
+            height: auto;
+            margin: 0 10px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Sidebar for navigation
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Login", "Register", "Home Page", "Search Zones", "SOS", "Products"])
+
+# --- Login Page ---
+if page == "Login":
+    st.markdown("<div class='main-title'>Login</div>", unsafe_allow_html=True)
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    
+    if st.button("Login", key="login"):
+        if user_exists(user_file, username):
+            if authenticate_user(user_file, username, password):
+                st.success("Logged in successfully!")
+            else:
+                st.error("Invalid username or password.")
+        else:
+            st.error("User not found. Please register first.")
+    
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number")
+    if st.button("SOS Call", key="sos_call"):
+        if to_number:
+            try:
+                call_sid = make_call(to_number, twilio_number)
+                st.success(f"Emergency SOS call initiated successfully! Call SID: {call_sid}")
+            except Exception as e:
+                st.error(f"Error initiating call: {e}")
+        else:
+            st.error("Please enter a valid phone number.")
+
+# --- Registration Page ---
+elif page == "Register":
+    st.markdown("<div class='main-title'>Register</div>", unsafe_allow_html=True)
+    new_username = st.text_input("New Username")
+    new_password = st.text_input("New Password", type="password")
+    
+    if st.button("Register", key="register"):
+        if new_username and new_password:
+            if not user_exists(user_file, new_username):
+                if add_user_to_xml(user_file, new_username, new_password):
+                    st.success("Registration successful!")
+                else:
+                    st.error("Registration failed.")
+            else:
+                st.error("Username already exists. Please choose a different username.")
+        else:
+            st.error("Please enter both username and password.")
+
+# --- Home Page ---
+elif page == "Home Page":
+    st.markdown("<div class='main-title'>Welcome to the Women Safety App</div>", unsafe_allow_html=True)
+
+    # Slideshow
+    st.markdown("""
+        <div class="slideshow-container">
+            <div class="mySlides">
+                <img src="https://cdn.statcdn.com/Infographic/images/normal/31858.jpeg" style="width:30%">
+                <div class="text">Slide 1</div>
+            </div>
+            <div class="mySlides">
+                <img src="https://ichef.bbci.co.uk/images/ic/640x360/p099rmrv.jpg" style="width:30%">
+                <div class="text">Slide 2</div>
+            </div>
+            <div class="mySlides">
+                <img src="https://www.techugo.com/blog/wp-content/uploads/2023/09/Stay-Ahead-with-Tech-Discover-Market-Trends-in-Womens-Safety-Apps.png"  style="width:30%"> 
+                <div class="text">Slide 3</div>
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <script>
+            let slideIndex = 0;
+            showSlides();
+            
+            function showSlides() {
+                let i;
+                let slides = document.getElementsByClassName("mySlides");
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";  
+                }
+                slideIndex++;
+                if (slideIndex > slides.length) {slideIndex = 1}    
+                slides[slideIndex-1].style.display = "block";  
+                setTimeout(showSlides, 2000); // Change image every 2 seconds
+            }
+            
+            function plusSlides(n) {
+                showSlides(slideIndex += n);
+            }
+        </script>
+    """, unsafe_allow_html=True)
+
+    # Buttons on the Landing Page
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number_landing")
+    
+    if st.button("SOS Call", key="landing_sos"):
+        if to_number:
+            try:
+                call_sid = make_call(to_number, twilio_number)
+                st.success(f"Emergency SOS call initiated successfully! Call SID: {call_sid}")
+            except Exception as e:
+                st.error(f"Error initiating call: {e}")
+        else:
+            st.error("Please enter a valid phone number.")
+
+    if st.button("SMS Alert", key="landing_sms"):
+        st.success("Sending SMS alert... (Please wait)")
+
+    if st.button("Buy Product", key="landing_buy"):
+        st.success("Redirecting to product page... (Please wait)")
+
+# --- Search Zones Page ---
+elif page == "Search Zones":
+    st.markdown("<div class='main-title'>Search for Danger and Safe Zones</div>", unsafe_allow_html=True)
+    district_name = st.text_input("Enter district name")
+    
+    if district_name:
+        district_data = crime_data[crime_data['District'].str.contains(district_name, case=False)]
+        if not district_data.empty:
+            danger_zones, safe_zones = classify_zones(district_data)
+            st.markdown("<div class='section-title'>Danger Zones</div>", unsafe_allow_html=True)
+            for zone in danger_zones:
+                st.write(f"**{zone['name']}**")
+            st.markdown("<div class='section-title'>Safe Zones</div>", unsafe_allow_html=True)
+            for zone in safe_zones:
+                st.write(f"**{zone['name']}**")
+            # Default location for map (can be adjusted based on your preference)
+            m = get_location_map(28.7041, 77.1025, danger_zones, safe_zones)
+            st_folium(m, width=700, height=500)
+        else:
+            st.error(f"No data found for {district_name}")
+
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number_search")
+    if st.button("SOS Call", key="search_sos"):
+        if to_number:
+            try:
+                call_sid = make_call(to_number, twilio_number)
+                st.success(f"Emergency SOS call initiated successfully! Call SID: {call_sid}")
+            except Exception as e:
+                st.error(f"Error initiating call: {e}")
+        else:
+            st.error("Please enter a valid phone number.")
+
+# --- SOS Page ---
+elif page == "SOS":
+    st.markdown("<div class='main-title'>SOS Alert</div>", unsafe_allow_html=True)
+    to_number = st.text_input("Enter the phone number for emergency SOS call", "+919353564074", key="sos_number_sos")
+    if st.button("SOS Call", key="sos_call"):
+        if to_number:
+            try:
+                call_sid = make_call(to_number, twilio_number)
+                st.success(f"Emergency SOS call initiated successfully! Call SID: {call_sid}")
+            except Exception as e:
+                st.error(f"Error initiating call: {e}")
+        else:
+            st.error("Please enter a valid phone number.")
+
+# --- Products Page ---
+elif page == "Products":
+    st.markdown("<div class='main-title'>Our Products</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>Product 1</div>", unsafe_allow_html=True)
+    st.image("https://example.com/product1.jpg", caption="Product 1")
+    st.markdown("<div class='section-title'>Product 2</div>", unsafe_allow_html=True)
+    st.image("https://example.com/product2.jpg", caption="Product 2")
+    st.markdown("<div class='section-title'>Product 3</div>", unsafe_allow_html=True)
+    st.image("https://example.com/product3.jpg", caption="Product 3")
+
+# --- Footer ---
+st.markdown("""
+    <div class="footer">
+        <p>Stay Safe! Your safety is our priority.</p>
+    </div>
+""", unsafe_allow_html=True)
+
